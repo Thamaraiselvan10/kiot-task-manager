@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth, API_URL } from '../context/AuthContext';
 import './Progress.css';
 
 export default function Progress() {
@@ -20,7 +20,7 @@ export default function Progress() {
 
             // Fetch staff list for admin
             if (isAdmin) {
-                const staffRes = await fetch('/api/users/staff', { headers });
+                const staffRes = await fetch(`${API_URL}/api/users/staff`, { headers });
                 if (staffRes.ok) {
                     const staffData = await staffRes.json();
                     setStaff(staffData.staff);
@@ -28,7 +28,7 @@ export default function Progress() {
             }
 
             // Fetch tasks
-            const tasksRes = await fetch('/api/tasks', { headers });
+            const tasksRes = await fetch(`${API_URL}/api/tasks`, { headers });
             if (tasksRes.ok) {
                 const tasksData = await tasksRes.json();
                 processProgressData(tasksData.tasks);

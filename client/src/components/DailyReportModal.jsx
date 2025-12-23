@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth, API_URL } from '../context/AuthContext';
 
 export default function DailyReportModal({ onClose, onSubmitted }) {
     const { token } = useAuth();
@@ -13,7 +13,7 @@ export default function DailyReportModal({ onClose, onSubmitted }) {
         setLoading(true);
 
         try {
-            const res = await fetch('/api/reports', {
+            const res = await fetch(`${API_URL}/api/reports`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

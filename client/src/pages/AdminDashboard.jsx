@@ -40,9 +40,9 @@ export default function AdminDashboard() {
             const headers = { 'Authorization': `Bearer ${token}` };
 
             const [statsRes, tasksRes, staffRes] = await Promise.all([
-                fetch('/api/tasks/stats/overview', { headers }),
-                fetch('/api/tasks', { headers }),
-                fetch('/api/users/staff', { headers })
+                fetch(`${API_URL}/api/tasks/stats/overview`, { headers }),
+                fetch(`${API_URL}/api/tasks`, { headers }),
+                fetch(`${API_URL}/api/users/staff`, { headers })
             ]);
 
             if (statsRes.ok) {
@@ -140,8 +140,8 @@ export default function AdminDashboard() {
 
         try {
             const endpoint = deleteConfirm.type === 'task'
-                ? `/api/tasks/${deleteConfirm.id}`
-                : `/api/users/${deleteConfirm.id}`;
+                ? `${API_URL}/api/tasks/${deleteConfirm.id}`
+                : `${API_URL}/api/users/${deleteConfirm.id}`;
 
             const res = await fetch(endpoint, {
                 method: 'DELETE',

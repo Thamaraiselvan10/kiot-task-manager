@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth, API_URL } from '../context/AuthContext';
 
 export default function UpdateTaskModal({ task, onClose, onUpdated }) {
     const { token } = useAuth();
@@ -14,7 +14,7 @@ export default function UpdateTaskModal({ task, onClose, onUpdated }) {
         setLoading(true);
 
         try {
-            const res = await fetch(`/api/tasks/${task.id}`, {
+            const res = await fetch(`${API_URL}/api/tasks/${task.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

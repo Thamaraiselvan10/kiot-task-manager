@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth, API_URL } from '../context/AuthContext';
 
 export default function CreateStaffModal({ onClose, onCreated }) {
     const { token } = useAuth();
@@ -23,7 +23,7 @@ export default function CreateStaffModal({ onClose, onCreated }) {
         setLoading(true);
 
         try {
-            const res = await fetch('/api/users', {
+            const res = await fetch(`${API_URL}/api/users`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

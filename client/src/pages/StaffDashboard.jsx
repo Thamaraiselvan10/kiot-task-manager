@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth, API_URL } from '../context/AuthContext';
 import { apiFetch } from '../config/api';
 import DailyReportModal from '../components/DailyReportModal';
 import UpdateTaskModal from '../components/UpdateTaskModal';
@@ -103,7 +103,7 @@ export default function StaffDashboard() {
 
     const checkTodayReport = async () => {
         try {
-            const res = await fetch('/api/reports/check-today', {
+            const res = await fetch(`${API_URL}/api/reports/check-today`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth, API_URL } from '../context/AuthContext';
 import './CreateTaskModal.css';
 
 export default function CreateTaskModal({ staff, onClose, onCreated }) {
@@ -44,7 +44,7 @@ export default function CreateTaskModal({ staff, onClose, onCreated }) {
         setLoading(true);
 
         try {
-            const res = await fetch('/api/tasks', {
+            const res = await fetch(`${API_URL}/api/tasks`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
