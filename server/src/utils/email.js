@@ -3,16 +3,23 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Create transporter
-const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: parseInt(process.env.SMTP_PORT) || 587,
-    secure: false,
-    auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
+// Create transporter only if SMTP is configured
+let transporter = null;
+
+const getTransporter = () => {
+    if (!transporter && process.env.SMTP_USER && process.env.SMTP_PASS) {
+        transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST || 'smtp.gmail.com',
+            port: parseInt(process.env.SMTP_PORT) || 587,
+            secure: false,
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS
+            }
+        });
     }
-});
+    return transporter;
+};
 
 // Send email helper
 export const sendEmail = async ({ to, subject, html, text }) => {
@@ -22,8 +29,14 @@ export const sendEmail = async ({ to, subject, html, text }) => {
         return null;
     }
 
+    const mailer = getTransporter();
+    if (!mailer) {
+        console.log('📧 Email skipped (transporter not available):', { to, subject });
+        return null;
+    }
+
     try {
-        const info = await transporter.sendMail({
+        const info = await mailer.sendMail({
             from: `"Task Management System" <${process.env.SMTP_USER}>`,
             to,
             subject,
