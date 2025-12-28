@@ -32,25 +32,37 @@ export default function CreateStaffModal({ onClose, onCreated }) {
                 body: JSON.stringify(formData)
             });
 
-            // Handle empty or non-JSON responses safely
-            let data;
             const contentType = res.headers.get('content-type');
+            let data;
+
             if (contentType && contentType.includes('application/json')) {
                 const text = await res.text();
-                data = text ? JSON.parse(text) : {};
+                try {
+                    data = text ? JSON.parse(text) : {};
+                } catch (parseError) {
+                    console.error('JSON Parse Error:', parseError, 'Response text:', text);
+                    throw new Error('Server returned invalid JSON response');
+                }
             } else {
+                // Handle non-JSON response (e.g. 404 HTML page from proxy)
+                const text = await res.text();
+                console.warn('Received non-JSON response:', text.substring(0, 500)); // Log first 500 chars
+                if (!res.ok) {
+                    throw new Error(`Server error (${res.status}): ${res.statusText}`);
+                }
                 data = {};
             }
 
             if (!res.ok) {
-                throw new Error(data.error || 'Failed to create staff. Please check if the server is running.');
+                throw new Error(data.error || `Failed to create staff (${res.status})`);
             }
 
             onCreated();
         } catch (err) {
+            console.error('Staff creation error:', err);
             // Provide more specific error messages
             if (err.message.includes('Unexpected end of JSON') || err.message.includes('Failed to fetch')) {
-                setError('Unable to connect to server. Please ensure the backend is running.');
+                setError('Unable to connect to server. Please ensure the backend is running and reachable.');
             } else {
                 setError(err.message);
             }
