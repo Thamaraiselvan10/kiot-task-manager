@@ -4,6 +4,8 @@ import CreateTaskModal from '../components/CreateTaskModal';
 import CreateStaffModal from '../components/CreateStaffModal';
 import ReassignTaskModal from '../components/ReassignTaskModal';
 import ConfirmModal from '../components/ConfirmModal';
+import CalendarModal from '../components/CalendarModal';
+import DayDetailsModal from '../components/DayDetailsModal';
 import './Dashboard.css';
 
 export default function AdminDashboard() {
@@ -15,6 +17,9 @@ export default function AdminDashboard() {
     const [loading, setLoading] = useState(true);
     const [showTaskModal, setShowTaskModal] = useState(false);
     const [showStaffModal, setShowStaffModal] = useState(false);
+    const [showCalendar, setShowCalendar] = useState(false);
+    const [showDayDetails, setShowDayDetails] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(null);
     const [activeTab, setActiveTab] = useState('tasks');
     const [openMenuId, setOpenMenuId] = useState(null);
     const [deleteConfirm, setDeleteConfirm] = useState(null); // { id, title, type: 'task' | 'staff' }
@@ -180,6 +185,7 @@ export default function AdminDashboard() {
 
     const handleTaskCreated = () => {
         setShowTaskModal(false);
+        setSelectedDate(null);
         fetchData();
     };
 
@@ -191,6 +197,17 @@ export default function AdminDashboard() {
     const handleStaffCreated = () => {
         setShowStaffModal(false);
         fetchData();
+    };
+
+    const handleDateSelect = (date) => {
+        setSelectedDate(date);
+        // Don't close calendar, just open details
+        setShowDayDetails(true);
+    };
+
+    const handleAddTaskFromDetails = () => {
+        setShowDayDetails(false);
+        setShowTaskModal(true);
     };
 
     const formatDate = (dateStr) => {
@@ -221,9 +238,15 @@ export default function AdminDashboard() {
             <div className="dashboard-header">
                 <h2>Admin Dashboard</h2>
                 <div className="dashboard-actions">
+                    <button className="btn btn-secondary" onClick={() => setShowCalendar(true)}>
+                        📅 Open Calendar
+                    </button>
                     <button
                         className="btn btn-primary"
-                        onClick={() => setShowTaskModal(true)}
+                        onClick={() => {
+                            setSelectedDate(null);
+                            setShowTaskModal(true);
+                        }}
                         disabled={staff.length === 0}
                         title={staff.length === 0 ? 'Add staff first before creating tasks' : 'Create a new task'}
                     >
@@ -569,7 +592,11 @@ export default function AdminDashboard() {
             {showTaskModal && (
                 <CreateTaskModal
                     staff={staff}
-                    onClose={() => setShowTaskModal(false)}
+                    initialDate={selectedDate}
+                    onClose={() => {
+                        setShowTaskModal(false);
+                        setSelectedDate(null);
+                    }}
                     onCreated={handleTaskCreated}
                 />
             )}
@@ -596,6 +623,23 @@ export default function AdminDashboard() {
                     message={`Are you sure you want to delete "${deleteConfirm.title}"? This action cannot be undone.`}
                     onConfirm={confirmDelete}
                     onCancel={() => setDeleteConfirm(null)}
+                />
+            )}
+
+            {showCalendar && (
+                <CalendarModal
+                    tasks={tasks}
+                    onClose={() => setShowCalendar(false)}
+                    onDateSelect={handleDateSelect}
+                />
+            )}
+
+            {showDayDetails && selectedDate && (
+                <DayDetailsModal
+                    date={selectedDate}
+                    tasks={tasks}
+                    onClose={() => setShowDayDetails(false)}
+                    onAddTask={handleAddTaskFromDetails}
                 />
             )}
         </div>

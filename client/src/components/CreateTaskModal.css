@@ -150,6 +150,19 @@
     gap: 16px;
 }
 
+/* Hide scrollbar for Create Task Modal but keep functionality */
+.create-task-modal {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE 10+ */
+}
+
+.create-task-modal::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
+}
+
 @media (max-width: 480px) {
     .form-row {
         grid-template-columns: 1fr;

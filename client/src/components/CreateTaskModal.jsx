@@ -2,13 +2,22 @@ import { useState } from 'react';
 import { useAuth, API_URL } from '../context/AuthContext';
 import './CreateTaskModal.css';
 
-export default function CreateTaskModal({ staff, onClose, onCreated }) {
+export default function CreateTaskModal({ staff, onClose, onCreated, initialDate }) {
     const { token } = useAuth();
+
+    // Format initialDate to YYYY-MM-DDTHH:mm string for datetime-local input
+    const formatInitialDate = (date) => {
+        if (!date) return '';
+        const offset = date.getTimezoneOffset() * 60000;
+        const localISOTime = (new Date(date.getTime() - offset)).toISOString().slice(0, 16);
+        return localISOTime;
+    };
+
     const [formData, setFormData] = useState({
         title: '',
         description: '',
         priority: 'Medium',
-        deadline: '',
+        deadline: formatInitialDate(initialDate),
         assignees: []
     });
     const [loading, setLoading] = useState(false);
@@ -69,7 +78,7 @@ export default function CreateTaskModal({ staff, onClose, onCreated }) {
 
     return (
         <div className="modal-overlay" onClick={onClose}>
-            <div className="modal" onClick={e => e.stopPropagation()}>
+            <div className="modal create-task-modal" onClick={e => e.stopPropagation()}>
                 <div className="modal-header">
                     <h2>Create New Task</h2>
                     <button className="modal-close" onClick={onClose}>&times;</button>

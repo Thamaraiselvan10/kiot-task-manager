@@ -190,18 +190,18 @@ export default function StaffDashboard() {
 
             {/* Priority Stats */}
             <h4 style={{ margin: '20px 0 10px', color: 'var(--text-secondary)' }}>By Priority</h4>
-            <div className="stats-grid" style={{ marginBottom: '30px' }}>
-                <div className="stat-card" style={{ borderLeft: '4px solid #f87171' }}>
-                    <h3>{stats.high}</h3>
-                    <p>High Priority</p>
+            <div className="priority-strip">
+                <div className="priority-item high">
+                    <span className="priority-dot"></span>
+                    <span>High Priority: <strong>{stats.high}</strong></span>
                 </div>
-                <div className="stat-card" style={{ borderLeft: '4px solid #fbbf24' }}>
-                    <h3>{stats.medium}</h3>
-                    <p>Medium Priority</p>
+                <div className="priority-item medium">
+                    <span className="priority-dot"></span>
+                    <span>Medium Priority: <strong>{stats.medium}</strong></span>
                 </div>
-                <div className="stat-card" style={{ borderLeft: '4px solid #34d399' }}>
-                    <h3>{stats.low}</h3>
-                    <p>Low Priority</p>
+                <div className="priority-item low">
+                    <span className="priority-dot"></span>
+                    <span>Low Priority: <strong>{stats.low}</strong></span>
                 </div>
             </div>
 

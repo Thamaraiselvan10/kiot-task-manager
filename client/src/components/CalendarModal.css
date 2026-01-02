@@ -1,0 +1,267 @@
+.calendar-modal {
+    max-width: 900px !important;
+    width: 95% !important;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+}
+
+.calendar-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.calendar-nav {
+    display: flex;
+    gap: 10px;
+}
+
+.calendar-nav-btn {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.calendar-nav-btn:hover {
+    background: var(--bg-hover);
+    border-color: var(--primary);
+}
+
+.calendar-modal .modal-body {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-grid-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 8px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.calendar-weekday {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 8px 0;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    flex: 1;
+    /* Ensure grid rows stretch to fill height */
+    grid-auto-rows: 1fr;
+}
+
+.calendar-day {
+    min-height: 80px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 8px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-day:hover {
+    border-color: var(--primary);
+    background: var(--bg-hover);
+    transform: translateY(-2px);
+}
+
+.calendar-day.empty {
+    background: transparent;
+    border: none;
+    cursor: default;
+    min-height: 0;
+}
+
+.calendar-day.empty:hover {
+    transform: none;
+}
+
+.day-number {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.calendar-day.today {
+    border-color: var(--primary);
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.calendar-day.today .day-number {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.day-tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: hidden;
+    flex: 1;
+}
+
+.task-dot {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--bg-hover);
+}
+
+.task-dot.high {
+    background: #f87171;
+}
+
+.task-dot.medium {
+    background: #fbbf24;
+}
+
+.task-dot.low {
+    background: #34d399;
+}
+
+/* Tooltip for tasks */
+.day-task-count {
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-top: auto;
+    text-align: center;
+}
+
+.task-count-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+}
+
+.calendar-day.today .task-count-badge {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+@media (max-width: 768px) {
+    .calendar-grid {
+        gap: 4px;
+    }
+
+    .calendar-day {
+        min-height: 60px;
+        padding: 4px;
+    }
+
+    .day-number {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .calendar-modal {
+        width: 100vw !important;
+        height: auto !important;
+        max-height: 90vh !important;
+        border-radius: var(--radius-md) !important;
+        margin: auto;
+        max-width: 95% !important;
+        position: relative;
+        top: auto;
+        left: auto;
+    }
+
+    .calendar-header {
+        padding: 0 8px;
+        margin-bottom: 8px;
+    }
+
+    .calendar-body {
+        padding: 0 4px;
+        /* Ensure content doesn't stretch to fill height inappropriately */
+        flex: 0 1 auto;
+    }
+
+    .calendar-grid {
+        gap: 2px;
+        /* Stop rows from stretching to fill the container height */
+        grid-auto-rows: min-content;
+        align-content: start;
+        flex: 0 1 auto;
+    }
+
+    .calendar-day {
+        min-height: 0;
+        padding: 2px;
+        justify-content: flex-start;
+        /* Make it a square */
+        aspect-ratio: 1/1;
+        height: auto;
+    }
+
+    .day-number {
+        font-size: 12px;
+        text-align: center;
+        margin-bottom: 0;
+        width: 100%;
+        /* Center number vertically since it's a square now */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Hide the task list graphic/dots on mobile to save space */
+    .day-tasks {
+        display: none;
+    }
+
+    /* Badge positioning for square layout */
+    .task-count-badge {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        font-size: 8px;
+        padding: 1px 4px;
+        margin: 0;
+        border-radius: 6px;
+        z-index: 1;
+    }
+}
