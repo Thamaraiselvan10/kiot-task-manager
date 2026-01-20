@@ -6,7 +6,7 @@
     background: linear-gradient(135deg, var(--bg-primary) 0%, #1a1f35 100%);
     padding: 20px;
 }
-
+ /* login-container styling */
 .login-container {
     width: 100%;
     max-width: 420px;
