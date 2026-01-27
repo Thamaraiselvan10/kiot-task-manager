@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Login.css';
 
 export default function Login() {
@@ -10,79 +10,100 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
-    const handleSubmit = async (e) => {
+    // Use location state to show messages (like "Session expired")
+    const message = location.state?.message;
+
+    async function handleSubmit(e) {
         e.preventDefault();
-        setError('');
-        setLoading(true);
 
         try {
+            setError('');
+            setLoading(true);
             await login(email, password);
             navigate('/dashboard');
         } catch (err) {
-            setError(err.message || 'Login failed. Please try again.');
+            setError('Failed to log in. Please check your credentials.');
+            console.error(err);
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     return (
-        <div className="login-page">
-            <div className="login-container">
-                <div className="login-header">
-                    <div className="login-logo">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                        </svg>
-                    </div>
-                    <h1>Task Management</h1>
-                    <p>Sign in to manage tasks and work</p>
+        <div className="login-container">
+            {/* Left Side: Branding */}
+            <div className="login-brand-section">
+                <div className="brand-content">
+                    <img src="/kiot-logo.png" alt="KIOT Logo" className="brand-logo-img" />
+                    <h1 className="brand-logo-text">Faculty Task Tracker</h1>
+                    <p className="brand-subtitle">
+                        Kiot - Placement and Industrial Relations
+                    </p>
                 </div>
+            </div>
 
-                <form onSubmit={handleSubmit} className="login-form">
-                    {error && (
-                        <div className="error-message">
-                            {error}
+            {/* Right Side: Form */}
+            <div className="login-form-section">
+                <div className="login-card">
+                    <div className="login-header">
+                        <h2>Welcome Back</h2>
+                        <p>Please enter your credentials to access the dashboard.</p>
+                    </div>
+
+                    {error && <div className="alert alert-danger" style={{
+                        color: 'var(--danger)',
+                        background: 'rgba(239,68,68,0.1)',
+                        padding: '1rem',
+                        borderRadius: 'var(--radius-sm)',
+                        marginBottom: '1rem',
+                        fontSize: '0.875rem'
+                    }}>{error}</div>}
+
+                    {message && <div className="alert alert-info" style={{
+                        color: 'var(--primary-light)',
+                        background: 'rgba(59,130,246,0.1)',
+                        padding: '1rem',
+                        borderRadius: 'var(--radius-sm)',
+                        marginBottom: '1rem',
+                        fontSize: '0.875rem'
+                    }}>{message}</div>}
+
+                    <form onSubmit={handleSubmit} className="login-form">
+                        <div className="form-group">
+                            <label htmlFor="email">Email Address</label>
+                            <input
+                                type="email"
+                                id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                placeholder="name@kiot.ac.in"
+                                autoFocus
+                            />
                         </div>
-                    )}
 
-                    <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Enter your email"
-                            required
-                            autoComplete="email"
-                        />
-                    </div>
+                        <div className="form-group">
+                            <label htmlFor="password">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                placeholder="••••••••"
+                            />
+                        </div>
 
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter your password"
-                            required
-                            autoComplete="current-password"
-                        />
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="btn btn-primary login-btn"
-                        disabled={loading}
-                    >
-                        {loading ? 'Signing in...' : 'Sign In'}
-                    </button>
-                </form>
-
-                <div className="login-footer">
-                    <p>Contact administrator if you need an account</p>
+                        <button
+                            disabled={loading}
+                            type="submit"
+                            className="login-btn"
+                        >
+                            {loading ? 'Authenticating...' : 'Sign In'}
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
