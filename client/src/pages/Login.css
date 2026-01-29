@@ -144,19 +144,129 @@
 @media (max-width: 1024px) {
     .login-container {
         grid-template-columns: 1fr;
+        min-height: 100vh;
+        min-height: 100dvh;
+        /* Dynamic viewport height for mobile browsers */
     }
 
     .login-brand-section {
-        padding: 3rem 2rem;
-        min-height: 300px;
+        padding: 2rem 1.5rem;
+        min-height: auto;
+    }
+
+    .brand-logo-img {
+        width: 80px;
+        margin-bottom: 1rem;
     }
 
     .brand-logo-text {
-        font-size: 2rem;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .brand-subtitle {
+        font-size: 1rem;
+    }
+
+    .login-form-section {
+        padding: 1.5rem;
     }
 
     .login-card {
         max-width: 100%;
+        padding: 0;
+    }
+
+    .login-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .login-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .login-form .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .login-form input {
+        height: 44px;
+    }
+
+    .login-btn {
+        height: 44px;
+        margin-top: 0.5rem;
+    }
+}
+
+/* Extra small screens - phones */
+@media (max-width: 480px) {
+    .login-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .login-brand-section {
+        padding: 1.5rem 1rem;
+        flex-shrink: 0;
+    }
+
+    .brand-content {
+        text-align: center;
+    }
+
+    .brand-logo-img {
+        width: 60px;
+        margin-bottom: 0.75rem;
+    }
+
+    .brand-logo-text {
+        font-size: 1.25rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .brand-subtitle {
+        font-size: 0.875rem;
+        border-left: none;
+        padding-left: 0;
+    }
+
+    .login-form-section {
+        flex: 1;
         padding: 1rem;
+        align-items: flex-start;
+        padding-top: 1.5rem;
+    }
+
+    .login-header {
+        margin-bottom: 1rem;
+    }
+
+    .login-header h2 {
+        font-size: 1.25rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .login-header p {
+        font-size: 0.875rem;
+    }
+
+    .login-form .form-group {
+        margin-bottom: 0.75rem;
+    }
+
+    .login-form label {
+        font-size: 0.8rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .login-form input {
+        height: 40px;
+        font-size: 0.9rem;
+    }
+
+    .login-btn {
+        height: 42px;
+        font-size: 0.9rem;
     }
 }
